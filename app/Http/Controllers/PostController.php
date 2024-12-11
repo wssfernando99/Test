@@ -154,4 +154,53 @@ class PostController extends Controller
             return redirect()->back()->with('error', 'Something went wrong. Please try again');
         }
     }
+
+    //Api functions
+
+    public function ViewAllPosts(){
+        try{
+
+            $userId = Auth::user()->userId;
+
+
+            $posts = Post::where('userId',$userId)
+                ->get();
+
+            $data = [
+                'posts' => $posts,
+            ];
+
+            return response()->json($data, 200);
+
+        }catch (Exception $e) {
+
+            return response()->json(['error' => 'An error occurred'], 500);
+        }
+    }
+
+    public function CreateNewPost(Request $request){
+
+        try{
+
+            $userId = Auth::user()->userId;
+
+            $post = new Post();
+
+            $post->userId = $userId;
+            $post->title = $request->title;
+            $post->content = $request->content;
+            $post->image = $request->image;
+
+            $post->save();
+
+            return response()->json(['message' => 'Post added successfully'], 200);
+
+        }catch (Exception $e) {
+
+            return response()->json(['error' => 'An error occurred'], 500);
+        }
+
+        
+
+    }
 }
