@@ -10,4 +10,5 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/viewAllPosts',[PostController::class,'ViewAllPosts']);
+    Route::post('/createNewPost',[PostController::class,'CreateNewPost']);
 });
