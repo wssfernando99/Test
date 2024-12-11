@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Exception;
@@ -15,6 +16,10 @@ class PostController extends Controller
         try{
 
             $userId = Auth::user()->userId;
+
+            // $user = User::find($userId);
+            // $posts = $user->posts; 
+
 
             $posts = Post::where('userId',$userId)
                 ->get();
