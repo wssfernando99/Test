@@ -200,7 +200,61 @@ class PostController extends Controller
             return response()->json(['error' => 'An error occurred'], 500);
         }
 
-        
+    }
 
+    public function EditPostAPI(Request $request)
+    {
+        try{
+
+            Post::where(['id' => $request->id])->update([
+                'title' => $request->title,
+                'content' => $request->content,
+            ]);;
+            
+
+            return response()->json(['message' => 'Post edited successfully'], 200);
+
+        }catch (Exception $e) {
+
+            return response()->json(['error' => 'An error occurred'], 500);
+        }
+
+    }
+
+    public function ViewOnePost(Request $request){
+        try{
+
+            $userId = Auth::user()->userId;
+
+
+            $post = Post::where('userId',$userId)
+                ->where('id',$request->id)
+                ->first();
+
+            $data = [
+                'post' => $post,
+            ];
+
+            return response()->json($data, 200);
+
+        }catch (Exception $e) {
+
+            return response()->json(['error' => 'An error occurred'], 500);
+        }
+    }
+
+    public function DeleteOnePost(Request $request){
+
+        try{
+
+            Post::where(['id' => $request->id])->delete();
+            
+
+            return response()->json(['message' => 'Post edited successfully'], 200);
+
+        }catch (Exception $e) {
+
+            return response()->json(['error' => 'An error occurred'], 500);
+        }
     }
 }

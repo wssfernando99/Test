@@ -8,6 +8,7 @@ use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Sanctum\HasApiTokens;
 
 class UserController extends Controller
 {
@@ -112,6 +113,34 @@ class UserController extends Controller
         } catch (Exception $e) {
 
             return redirect()->back()->with('error', 'Something went wrong. Please try again');
+        }
+    }
+
+    public function UserLogin (Request $request){
+        try {
+
+            if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'isActive' => 1])) {
+
+
+                $user = Auth::user();
+
+                $token = $user->createToken('auth-token')->plainTextToken;
+
+                $data = [
+                    'token' => $token,
+                ];
+
+                return response()->json($data, 200);
+                
+            }else{
+
+                return response()->json(['error' => 'Credintials are ot match'], 200);
+            }
+
+            
+        } catch (Exception $e) {
+
+            return response()->json(['error' => 'An error occurred'], 500);
         }
     }
 }
