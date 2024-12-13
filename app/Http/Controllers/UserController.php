@@ -8,7 +8,6 @@ use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Laravel\Sanctum\HasApiTokens;
 
 class UserController extends Controller
 {
@@ -124,7 +123,7 @@ class UserController extends Controller
 
                 $user = Auth::user();
 
-                $token = $user->createToken('auth-token')->plainTextToken;
+                $token = $user->createToken('authToken')->plainTextToken;
 
                 $data = [
                     'token' => $token,
